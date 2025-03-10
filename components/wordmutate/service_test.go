@@ -22,7 +22,7 @@ func TestService_InsertsEn(t *testing.T) {
 	s := New()
 
 	addOne := s.InsertRuneEn("internaionaization")
-	require.Len(t, addOne, 513)
+	require.Len(t, addOne, 551)
 	require.Contains(t, addOne, "internationaization")
 	require.Contains(t, addOne, "intern-aionaization")
 	require.Contains(t, addOne, "internaionaiza-tion")
@@ -35,7 +35,7 @@ func TestService_InsertsEn(t *testing.T) {
 	}
 
 	allAdds := append(addOne, addTwo...)
-	require.Len(t, allAdds, 277533)
+	require.Len(t, allAdds, 320131)
 
 	require.Contains(t, allAdds, "internationalization")
 	require.Contains(t, allAdds, "intern-aionaiza-tion")

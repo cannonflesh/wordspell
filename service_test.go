@@ -1,20 +1,42 @@
 package wordspell
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	"github.com/cannonflesh/wordspell/components/bloomfilter"
+	"github.com/cannonflesh/wordspell/components/index"
+	"github.com/cannonflesh/wordspell/components/wordmutate"
+	"github.com/cannonflesh/wordspell/domain"
 	"github.com/cannonflesh/wordspell/options"
 	"github.com/cannonflesh/wordspell/testdata"
-	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestService_Correct(t *testing.T) {
 	opt := &options.Options{
-		DataDir: "./data",
+		DataDir: "./testdata",
 	}
 
 	lgr, lbuf := testdata.NewTestLogger()
 	s := New(opt, lgr)
+
+	enIdx := map[string]uint32{
+		"the":                  1000,
+		"internationalization": 1000,
+	}
+
+	ruIdx := map[string]uint32{
+		"ящик":         1000,
+		"для":          1000,
+		"безопасности": 1000,
+		"организация":  1000,
+	}
+
+	s.index.SetLangIndex(domain.EnLangCode, enIdx)
+	s.index.SetLangIndex(domain.RuLangCode, ruIdx)
+
+	fillBloomFilter(s.bloom, s.index, s.mutate, t)
 
 	t.Run("SuccessShortEn", func(t *testing.T) {
 		correct := s.Correct("1thф")
@@ -61,18 +83,28 @@ func TestService_Correct(t *testing.T) {
 	require.Contains(t, lbuf.String(), `msg="getting weight: language not detected"`)
 }
 
-func TestService_Correctness(t *testing.T) {
-	opt := &options.Options{
-		DataDir: "./data",
+func fillBloomFilter(bFilter *bloomfilter.Component, idx *index.Component, mutate *wordmutate.Component, t *testing.T) {
+	bFilterSizeRu, err := idx.DeletesEstimated(domain.RuLangCode)
+	require.NoError(t, err)
+
+	bFilterSizeEn, err := idx.DeletesEstimated(domain.EnLangCode)
+	require.NoError(t, err)
+
+	bFilter.Reset(bFilterSizeRu + bFilterSizeEn)
+
+	ruWords, err := idx.Words(domain.RuLangCode)
+	require.NoError(t, err)
+
+	enWords, err := idx.Words(domain.EnLangCode)
+	require.NoError(t, err)
+
+	for w := range ruWords {
+		dts := mutate.Deletes(w)
+		bFilter.Add(dts...)
 	}
 
-	lgr, _ := testdata.NewTestLogger()
-	s := New(opt, lgr)
-
-	t.Run("Check", func(t *testing.T) {
-		start := time.Now()
-		correct := s.Correct("подсигар")
-		t.Log(correct)
-		t.Log(time.Since(start), "elapsed")
-	})
+	for w := range enWords {
+		dts := mutate.Deletes(w)
+		bFilter.Add(dts...)
+	}
 }
