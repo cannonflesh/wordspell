@@ -44,5 +44,8 @@ func TestService_All(t *testing.T) {
 }
 
 func goldenOpt() *options.Options {
-	return &options.Options{DataDir: "../../testdata"}
+	return &options.Options{
+		DataDir: "../../testdata",
+		Langs:   nil,
+	}
 }
