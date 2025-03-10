@@ -15,7 +15,8 @@ func TestService_All(t *testing.T) {
 
 	// Файлы данных подбираются из директории testdata,
 	// они там урезаны как раз по 1000 записей.
-	s := New(goldenOpt(), langdetect.New(), l)
+	opt := goldenOpt()
+	s := New(opt, langdetect.New(), l)
 
 	require.Len(t, s.index, 2)
 	require.Len(t, s.index["en"], 1000)

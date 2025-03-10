@@ -136,7 +136,7 @@ func (s *Component) SetLangIndex(lang string, idx map[string]uint32) {
 }
 
 func (s *Component) parseFile(lang string) error {
-	path := filepath.Join(s.opt.DataDir, lang+".dat")
+	path := filepath.Join(s.opt.DataDir, lang+".txt")
 	fh, err := os.Open(path)
 	if err != nil {
 		return errors.WithStack(err)
@@ -154,6 +154,10 @@ func (s *Component) parseFile(lang string) error {
 	}
 
 	for lineScan.Scan() {
+		if err := lineScan.Err(); err != nil {
+			return errors.WithStack(err)
+		}
+
 		word, frequency, err := s.parseFields(lineScan.Bytes())
 		if err != nil {
 			continue
@@ -180,6 +184,10 @@ func (s *Component) parseFields(in []byte) (string, uint32, error) {
 		err       error
 	)
 	for wordScan.Scan() {
+		if err := wordScan.Err(); err != nil {
+			return "", 0, errors.WithStack(err)
+		}
+
 		switch idx {
 		case 0:
 			word = wordScan.Text()
@@ -205,7 +213,7 @@ func (s *Component) parseFields(in []byte) (string, uint32, error) {
 }
 
 func (s *Component) indexFileWriteHandler(lang string) (*os.File, error) {
-	path := filepath.Join(s.opt.DataDir, lang+".dat")
+	path := filepath.Join(s.opt.DataDir, lang+".txt")
 	fh, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
 	if err != nil {
 		return nil, errors.WithStack(err)
