@@ -69,8 +69,28 @@ func TestService_Correct(t *testing.T) {
 		require.Equal(t, "internationalization", correct)
 	})
 
+	t.Run("OneExtraRuneEn", func(t *testing.T) {
+		correct := s.Correct("internationallization")
+		require.Equal(t, "internationalization", correct)
+	})
+
+	t.Run("TwoExtraRunesEn", func(t *testing.T) {
+		correct := s.Correct("interniationallization")
+		require.Equal(t, "internationalization", correct)
+	})
+
 	t.Run("NoCheckRu", func(t *testing.T) {
 		correct := s.Correct("организация")
+		require.Equal(t, "организация", correct)
+	})
+
+	t.Run("OneExtraRuneRu", func(t *testing.T) {
+		correct := s.Correct("организацияя")
+		require.Equal(t, "организация", correct)
+	})
+
+	t.Run("TwoExtraRunesRu", func(t *testing.T) {
+		correct := s.Correct("организзацияя")
 		require.Equal(t, "организация", correct)
 	})
 
