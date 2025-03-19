@@ -46,7 +46,15 @@ func (s *Service) Correct(word string) string {
 	best := ""
 
 	for _, w := range dels {
+		// Проверяем, нет ли в индексе самого удаления.
+		if weight := s.index.Weight(w); weight > 0 {
+			best = w
+
+			break
+		}
+
 		if s.bloom.Test(w) {
+			// Выполняем полный набор вставок по одной руне, проверяем на наличие их в индексе.
 			insertsOne := s.insertRune(w)
 			for _, plusOne := range insertsOne {
 				if weight := s.index.Weight(plusOne); weight > maxWeight {
@@ -58,6 +66,8 @@ func (s *Service) Correct(word string) string {
 				break
 			}
 
+			// Для каждой из однорунных вставок выполняем полный набор однорунных вставок
+			// и проверяем еще и их на наличие в индексе.
 			for _, plusOne := range insertsOne {
 				insertsTwo := s.insertRune(plusOne)
 				for _, plusTwo := range insertsTwo {
