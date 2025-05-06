@@ -1,4 +1,4 @@
-module gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell
+module github.com/cannonflesh/wordspell
 
 go 1.22
 

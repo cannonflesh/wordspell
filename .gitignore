@@ -19,8 +19,3 @@ go.work.sum
 
 # IDE files
 .idea
-
-# Data files
-.datafiles
-.dbindex
-/testdata/check.index
