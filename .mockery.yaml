@@ -7,7 +7,7 @@ mockname: "{{ .Mock }}{{ .InterfaceNameCamel }}"
 disable-version-string: True
 
 packages:
-  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/index: {}
-  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex: {}
-  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter: {}
-  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/catalog: {}
+  github.com/cannonflesh/wordspell/components/index: {}
+  github.com/cannonflesh/wordspell/components/trademarkindex: {}
+  github.com/cannonflesh/wordspell/components/bloomfilter: {}
+  github.com/cannonflesh/wordspell/repo/catalog: {}
