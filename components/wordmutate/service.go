@@ -13,6 +13,8 @@
 
 package wordmutate
 
+import "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
+
 type Component struct {
 	ruAlphabet []rune
 	enAlphabet []rune
@@ -88,6 +90,19 @@ func (s *Component) InsertRuneRu(w string) []string {
 		for _, r := range s.ruAlphabet {
 			res = append(res, string(runeWord[:i])+string(r)+string(runeWord[i:]))
 		}
+	}
+
+	return res
+}
+
+func (s *Component) InsertSpace(w string) []string {
+	runeWord := []rune(w)
+
+	resLen := len(runeWord) + 1
+
+	res := make([]string, 0, resLen)
+	for i := 0; i <= len(runeWord); i++ {
+		res = append(res, string(runeWord[:i])+domain.SpaceSeparator+string(runeWord[i:]))
 	}
 
 	return res

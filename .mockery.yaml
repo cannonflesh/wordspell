@@ -1,0 +1,13 @@
+with-expecter: true
+inpackage: true
+all: true
+dir: "{{ .InterfaceDir }}"
+filename: "mock_{{ .InterfaceNameSnake }}.go"
+mockname: "{{ .Mock }}{{ .InterfaceNameCamel }}"
+disable-version-string: True
+
+packages:
+  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/index: {}
+  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex: {}
+  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter: {}
+  gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/catalog: {}
