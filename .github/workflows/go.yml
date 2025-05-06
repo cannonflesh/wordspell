@@ -29,4 +29,5 @@ jobs:
         run: |
           apt update && apt -y install mockery
           make dep-install
+          make mock
           make test
