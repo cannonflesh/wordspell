@@ -3,7 +3,7 @@ package processors
 import (
 	"strings"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
+	"github.com/cannonflesh/wordspell/domain"
 )
 
 func SplitChunk(chunk string) (string, string, string) {

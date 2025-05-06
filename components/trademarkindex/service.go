@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
+	"github.com/cannonflesh/wordspell/domain"
 )
 
 // DataStore описывает методы чтения-записи так,

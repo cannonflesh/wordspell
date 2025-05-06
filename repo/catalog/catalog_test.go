@@ -1,9 +1,9 @@
 package catalog
 
 import (
+	"github.com/cannonflesh/wordspell/testdata"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
 	"testing"
 )
 

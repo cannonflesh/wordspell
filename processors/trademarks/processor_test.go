@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/file"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
+	"github.com/cannonflesh/wordspell/components/trademarkindex"
+	"github.com/cannonflesh/wordspell/repo/file"
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestProcessor_Process(t *testing.T) {

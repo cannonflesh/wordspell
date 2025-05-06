@@ -1,8 +1,8 @@
 package units
 
 import (
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors"
+	"github.com/cannonflesh/wordspell/domain"
+	"github.com/cannonflesh/wordspell/processors"
 	"regexp"
 	"strings"
 )

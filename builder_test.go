@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/index"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/langdetect"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
+	"github.com/cannonflesh/wordspell/components/bloomfilter"
+	"github.com/cannonflesh/wordspell/components/index"
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/components/trademarkindex"
+	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestBuilder_Build(t *testing.T) {

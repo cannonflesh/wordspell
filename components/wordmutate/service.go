@@ -13,7 +13,7 @@
 
 package wordmutate
 
-import "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
+import "github.com/cannonflesh/wordspell/domain"
 
 type Component struct {
 	ruAlphabet []rune

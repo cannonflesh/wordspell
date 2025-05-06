@@ -2,9 +2,9 @@ package index
 
 import (
 	"bytes"
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/options"
 	"github.com/stretchr/testify/require"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/langdetect"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
 	"io"
 	"sync"
 	"testing"

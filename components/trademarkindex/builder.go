@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cannonflesh/wordspell/domain"
 	"github.com/sirupsen/logrus"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
 )
 
 const sourceBatchLen = 5000

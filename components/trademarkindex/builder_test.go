@@ -5,8 +5,8 @@ import (
 	"io"
 	"testing"
 
+	"github.com/cannonflesh/wordspell/testdata"
 	"github.com/stretchr/testify/require"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
 )
 
 func TestBuilder_LoadIndexData(t *testing.T) {

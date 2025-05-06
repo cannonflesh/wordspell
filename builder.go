@@ -5,17 +5,17 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/index"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/langdetect"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/wordmutate"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/postgres"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/s3"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/catalog"
-	s3repo "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/s3"
+	"github.com/cannonflesh/wordspell/components/bloomfilter"
+	"github.com/cannonflesh/wordspell/components/index"
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/components/trademarkindex"
+	"github.com/cannonflesh/wordspell/components/wordmutate"
+	"github.com/cannonflesh/wordspell/domain"
+	"github.com/cannonflesh/wordspell/internal/postgres"
+	"github.com/cannonflesh/wordspell/internal/s3"
+	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/repo/catalog"
+	s3repo "github.com/cannonflesh/wordspell/repo/s3"
 )
 
 type Builder struct {

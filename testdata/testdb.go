@@ -15,7 +15,7 @@ import (
 	contpgx "github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/postgres"
+	"github.com/cannonflesh/wordspell/internal/postgres"
 )
 
 type PgConn struct {

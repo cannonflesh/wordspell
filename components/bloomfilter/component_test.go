@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestComponent_All(t *testing.T) {

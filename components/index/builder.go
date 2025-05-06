@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cannonflesh/wordspell/domain"
 	"github.com/microcosm-cc/bluemonday"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
 )
 
 var (

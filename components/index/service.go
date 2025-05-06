@@ -11,8 +11,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
+	"github.com/cannonflesh/wordspell/domain"
+	"github.com/cannonflesh/wordspell/options"
 )
 
 type langDetector interface {

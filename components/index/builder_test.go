@@ -3,9 +3,9 @@ package index
 import (
 	"testing"
 
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/testdata"
 	"github.com/stretchr/testify/require"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/langdetect"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
 )
 
 const (

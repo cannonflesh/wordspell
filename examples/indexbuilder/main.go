@@ -3,12 +3,12 @@ package main
 import (
 	"github.com/sirupsen/logrus"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/postgres"
-	s3client "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/s3"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
-	s3source "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/s3"
+	"github.com/cannonflesh/wordspell"
+	"github.com/cannonflesh/wordspell/components/bloomfilter"
+	"github.com/cannonflesh/wordspell/internal/postgres"
+	s3client "github.com/cannonflesh/wordspell/internal/s3"
+	"github.com/cannonflesh/wordspell/options"
+	s3source "github.com/cannonflesh/wordspell/repo/s3"
 )
 
 func main() {

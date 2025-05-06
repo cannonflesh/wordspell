@@ -3,9 +3,9 @@ package bloomfilter
 import (
 	"bytes"
 	"github.com/bits-and-blooms/bloom/v3"
+	"github.com/cannonflesh/wordspell/domain"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
 	"io"
 	"sync"
 )

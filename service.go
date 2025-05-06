@@ -1,26 +1,26 @@
 package wordspell
 
 import (
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/dimensions"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/dimsuffix"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/papersizes"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/units"
+	"github.com/cannonflesh/wordspell/processors/dimensions"
+	"github.com/cannonflesh/wordspell/processors/dimsuffix"
+	"github.com/cannonflesh/wordspell/processors/papersizes"
+	"github.com/cannonflesh/wordspell/processors/units"
 	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
 
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/bloomfilter"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/index"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/langdetect"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/trademarkindex"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/components/wordmutate"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/domain"
-	s3client "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/s3"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/options"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/dupremove"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/processors/trademarks"
-	s3source "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/repo/s3"
+	"github.com/cannonflesh/wordspell/components/bloomfilter"
+	"github.com/cannonflesh/wordspell/components/index"
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/components/trademarkindex"
+	"github.com/cannonflesh/wordspell/components/wordmutate"
+	"github.com/cannonflesh/wordspell/domain"
+	s3client "github.com/cannonflesh/wordspell/internal/s3"
+	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/processors/dupremove"
+	"github.com/cannonflesh/wordspell/processors/trademarks"
+	s3source "github.com/cannonflesh/wordspell/repo/s3"
 )
 
 type processor interface {

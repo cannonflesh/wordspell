@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/stretchr/testify/require"
 
-	s3client "gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/internal/s3"
-	"gitlab.sima-land.ru/dev-dep/dev/packages/go-wordspell/testdata"
+	s3client "github.com/cannonflesh/wordspell/internal/s3"
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestStore_IsExists_DataReader(t *testing.T) {
