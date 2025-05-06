@@ -1,29 +1,29 @@
 package bloomfilter
 
 import (
-	"github.com/cannonflesh/wordspell/options"
-	"github.com/cannonflesh/wordspell/testdata"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestComponent_All(t *testing.T) {
-	t.Run("EmptyBloomFilter", func(t *testing.T) {
-		lgr, lbuf := testdata.NewTestLogger()
-		opt := &options.Options{DataDir: "./"}
-		bf := New(opt, lgr)
+	lgr, lbuf := testdata.NewTestLogger()
+	opt := &Options{FalsePositiveRate: 0.01}
 
-		found := bf.Test("хрензначо")
-		require.False(t, found)
+	store := NewMockDataStore(t)
 
-		bf.Reset(100)
-		bf.Add("хрензначо")
+	bf := New(opt, store, lgr)
 
-		found = bf.Test("хрензначо")
-		require.True(t, found)
+	found := bf.Test("хрензначо")
+	require.False(t, found)
 
-		require.Contains(t, lbuf.String(), `category=components.bloom_filter`)
-		require.Contains(t, lbuf.String(), `msg="loading bloom filter data from file"`)
-		require.Contains(t, lbuf.String(), `error="open bloom.dat: no such file or directory"`)
-	})
+	bf.Reset(100)
+	bf.Add("хрензначо")
+
+	found = bf.Test("хрензначо")
+	require.True(t, found)
+
+	require.Empty(t, lbuf.String())
 }

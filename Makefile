@@ -5,3 +5,7 @@ dep-install:
 
 test:
 	go test -cover ./...
+
+mock:
+	find . -name 'mock_*' -delete
+	mockery

@@ -1,94 +1,246 @@
 package wordspell
 
 import (
+	"github.com/cannonflesh/wordspell/processors/dimensions"
+	"github.com/cannonflesh/wordspell/processors/dimsuffix"
+	"github.com/cannonflesh/wordspell/processors/papersizes"
+	"github.com/cannonflesh/wordspell/processors/units"
+	"strings"
+	"time"
+
 	"github.com/sirupsen/logrus"
 
 	"github.com/cannonflesh/wordspell/components/bloomfilter"
 	"github.com/cannonflesh/wordspell/components/index"
 	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/components/trademarkindex"
 	"github.com/cannonflesh/wordspell/components/wordmutate"
 	"github.com/cannonflesh/wordspell/domain"
+	s3client "github.com/cannonflesh/wordspell/internal/s3"
 	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/processors/dupremove"
+	"github.com/cannonflesh/wordspell/processors/trademarks"
+	s3source "github.com/cannonflesh/wordspell/repo/s3"
 )
 
-type Service struct {
-	opt *options.Options
+type processor interface {
+	Process(words []string) []string
+}
 
+type Service struct {
 	langs  *langdetect.Component
-	index  *index.Component
+	index  *index.Service
 	mutate *wordmutate.Component
 	bloom  *bloomfilter.Component
+
+	preProcessors  []processor
+	postProcessors []processor
 
 	logger *logrus.Entry
 }
 
-func New(opt *options.Options, l *logrus.Entry) *Service {
+func New(opt *options.Options, l *logrus.Entry) (*Service, error) {
 	langDetect := langdetect.New()
 
-	return &Service{
-		opt: opt,
-
-		langs:  langDetect,
-		index:  index.New(opt, langDetect, l),
-		mutate: wordmutate.New(),
-		bloom:  bloomfilter.New(opt, l),
-		logger: l.WithField(domain.CategoryFieldName, "service.word_speller"),
+	s3cli, err := s3client.NewClient(opt.S3Client)
+	if err != nil {
+		return nil, err
 	}
+
+	store, err := s3source.NewStore(s3cli, opt.S3Data)
+	if err != nil {
+		return nil, err
+	}
+
+	startTmLoad := time.Now()
+	tm, err := trademarkindex.NewService(store, l)
+	if err != nil {
+		return nil, err
+	}
+	l.Infof("trademarks loaded in %s", time.Since(startTmLoad))
+
+	startIdxLoad := time.Now()
+	idx, err := index.NewService(opt, langDetect, store, l)
+	if err != nil {
+		return nil, err
+	}
+	l.Infof("index loaded in %s", time.Since(startIdxLoad))
+
+	startLoadBloom := time.Now()
+	bloom := bloomfilter.New(&opt.Bloom, store, l)
+	err = bloom.Load()
+	if err != nil {
+		return nil, err
+	}
+	l.Infof("bloom loaded in %s", time.Since(startLoadBloom))
+
+	preProcessors := []processor{
+		trademarks.New(tm),
+		dimsuffix.New(),
+		dimensions.New(),
+		papersizes.New(),
+		units.New(),
+	}
+
+	postProcessors := []processor{
+		dupremove.New(),
+	}
+
+	return &Service{
+		langs:  langDetect,
+		index:  idx,
+		mutate: wordmutate.New(),
+		bloom:  bloom,
+
+		preProcessors:  preProcessors,
+		postProcessors: postProcessors,
+
+		logger: l.WithField(domain.CategoryFieldName, "service.word_speller"),
+	}, nil
 }
 
-func (s *Service) Correct(word string) string {
+func (s *Service) Correct(request string) string {
+	preProcessed := strings.Fields(domain.CleanTextRE.ReplaceAllString(request, domain.SpaceSeparator))
+	for _, wp := range s.preProcessors {
+		preProcessed = wp.Process(preProcessed)
+	}
+
+	digest := s.checkWordPairs(domain.ParseDigest(preProcessed))
+
+	res := make([]string, 0, len(digest))
+	for _, v := range digest {
+		switch vv := v.(type) {
+		case domain.DigestRaw:
+			if splitted, found := s.splittedWord(vv); found {
+				res = append(res, splitted)
+			} else {
+				res = append(res, s.correctWord(vv).String())
+			}
+		case domain.DigestReady:
+			res = append(res, vv.String())
+		}
+	}
+
+	for _, wp := range s.postProcessors {
+		res = wp.Process(res)
+	}
+
+	return strings.Join(res, domain.SpaceSeparator)
+}
+
+func (s *Service) checkWordPairs(dig domain.Digest) domain.Digest {
+	res := domain.NewEmptyDigest()
+
+	for el, replaced := s.wordPair(dig); el != nil; el, replaced = s.wordPair(dig) {
+		res = res.Add(el)
+
+		if len(dig) == 0 {
+			break
+		}
+
+		if replaced {
+			dig = dig[2:]
+		} else {
+			dig = dig[1:]
+		}
+	}
+
+	return res
+}
+
+func (s *Service) wordPair(dig domain.Digest) (domain.DigestElement, bool) {
+	if len(dig) == 0 {
+		return nil, false
+	}
+
+	var (
+		left, right         domain.DigestRaw
+		okLeft, okRight     bool
+		leftLang, rightLang string
+	)
+
+	if left, okLeft = dig[0].(domain.DigestRaw); !okLeft {
+		return dig[0], false
+	}
+
+	if len(dig) < 2 {
+		return left, false
+	}
+
+	if right, okRight = dig[1].(domain.DigestRaw); !okRight {
+		return left, false
+	}
+
+	leftLang = s.langs.LangByWord(left.String())
+	rightLang = s.langs.LangByWord(right.String())
+
+	if leftLang == domain.UnknownLangCode || leftLang == domain.NumLangCode || rightLang != leftLang {
+		return left, false
+	}
+
+	merged := strings.ToLower(left.Merge(right).String())
+	if s.index.Weight(merged) > 0 {
+		return domain.NewDigestReady(merged), true
+	}
+
+	return left, false
+}
+
+func (s *Service) splittedWord(el domain.DigestRaw) (string, bool) {
+	splitted := s.mutate.InsertSpace(strings.ToLower(el.String()))
+	var (
+		maxWeight uint32
+		best      string
+	)
+
+	for _, w := range splitted {
+		if weight := s.index.Weight(w); weight > maxWeight {
+			maxWeight = weight
+			best = w
+		}
+	}
+
+	if best != "" {
+		return best, true
+	}
+
+	return el.String(), false
+}
+
+func (s *Service) correctWord(el domain.DigestRaw) domain.DigestElement {
+	word := strings.ToLower(el.String())
+
 	if s.index.Weight(word) > 0 {
-		return word
+		return domain.NewDigestReady(word)
 	}
 
 	dels := s.mutate.Deletes(word)
-	maxWeight := uint32(0)
-	best := ""
-
 	for _, w := range dels {
 		// Проверяем, нет ли в индексе самого удаления.
 		if weight := s.index.Weight(w); weight > 0 {
-			best = w
-
-			break
+			return domain.NewDigestReady(w)
 		}
 
 		if s.bloom.Test(w) {
 			// Выполняем полный набор вставок по одной руне, проверяем на наличие их в индексе.
 			insertsOne := s.insertRune(w)
-			for _, plusOne := range insertsOne {
-				if weight := s.index.Weight(plusOne); weight > maxWeight {
-					maxWeight = weight
-					best = plusOne
-				}
-			}
-			if best != "" {
-				break
+			correctWord := s.findWordWithMaxWeight(insertsOne)
+			if correctWord != "" {
+				return domain.NewDigestReady(correctWord)
 			}
 
 			// Для каждой из однорунных вставок выполняем полный набор однорунных вставок
 			// и проверяем еще и их на наличие в индексе.
 			for _, plusOne := range insertsOne {
-				insertsTwo := s.insertRune(plusOne)
-				for _, plusTwo := range insertsTwo {
-					if weight := s.index.Weight(plusTwo); weight > maxWeight {
-						maxWeight = weight
-						best = plusTwo
-					}
-
-					if best != "" {
-						break
-					}
+				correctWord = s.findWordWithMaxWeight(s.insertRune(plusOne))
+				if correctWord != "" {
+					return domain.NewDigestReady(correctWord)
 				}
 			}
 		}
 	}
 
-	if best == "" {
-		best = word
-	}
-
-	return best
+	return el
 }
 
 func (s *Service) insertRune(w string) []string {
@@ -102,7 +254,21 @@ func (s *Service) insertRune(w string) []string {
 		return []string{w}
 	}
 
-	s.logger.Warn("Correct: language not detected")
+	s.logger.Debug("correctWord: language not detected")
 
 	return nil
+}
+
+func (s *Service) findWordWithMaxWeight(words []string) string {
+	maxWeight := uint32(0)
+	res := ""
+
+	for _, w := range words {
+		if weight := s.index.Weight(w); weight > maxWeight {
+			maxWeight = weight
+			res = w
+		}
+	}
+
+	return res
 }

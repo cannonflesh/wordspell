@@ -1,6 +1,7 @@
 package langdetect
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -34,6 +35,7 @@ func TestComponent_LangByWord(t *testing.T) {
 		require.Equal(t, ruLangCode, c.LangByWord("военный"))
 		require.Equal(t, ruLangCode, c.LangByWord("вfенк1"))
 		require.Equal(t, ruLangCode, c.LangByWord("thпру"))
+		require.Equal(t, ruLangCode, c.LangByWord("игрушка для"))
 
 		require.Equal(t, enLangCode, c.LangByWord("motorola"))
 		require.Equal(t, enLangCode, c.LangByWord("1motoяrola"))
@@ -50,5 +52,50 @@ func TestComponent_LangByWord(t *testing.T) {
 
 		require.Equal(t, unknownLangCode, c.LangByWord("the phrase of words"))
 		require.Equal(t, unknownLangCode, c.LangByWord("это не одно слово"))
+	})
+}
+
+func TestComponent_ParseWordPair(t *testing.T) {
+	c := New()
+
+	t.Run("EmptyPair", func(t *testing.T) {
+		var check []string
+		first, second, lang := c.ParseWordPair(check)
+		require.Equal(t, lang, unknownLangCode)
+		require.Empty(t, first)
+		require.Empty(t, second)
+	})
+	t.Run("SingleWordPair", func(t *testing.T) {
+		check := []string{"фрик"}
+		first, second, lang := c.ParseWordPair(check)
+		require.Equal(t, ruLangCode, lang)
+		require.Equal(t, strings.ToLower(check[0]), first)
+		require.Empty(t, second)
+	})
+	t.Run("ValidPair", func(t *testing.T) {
+		check := []string{"пРим", "грИм"}
+		first, second, lang := c.ParseWordPair(check)
+		require.Equal(t, ruLangCode, lang)
+		require.Equal(t, strings.ToLower(check[0]), first)
+		require.Equal(t, strings.ToLower(check[1]), second)
+
+		check = []string{"cRax", "PaX"}
+		first, second, lang = c.ParseWordPair(check)
+		require.Equal(t, enLangCode, lang)
+		require.Equal(t, strings.ToLower(check[0]), first)
+		require.Equal(t, strings.ToLower(check[1]), second)
+	})
+	t.Run("DifferentLangsPair", func(t *testing.T) {
+		check := []string{"пРим", "tRax"}
+		first, second, lang := c.ParseWordPair(check)
+		require.Equal(t, ruLangCode, lang)
+		require.Equal(t, strings.ToLower(check[0]), first)
+		require.Empty(t, second)
+
+		check = []string{"tRax", "пРим"}
+		first, second, lang = c.ParseWordPair(check)
+		require.Equal(t, enLangCode, lang)
+		require.Equal(t, strings.ToLower(check[0]), first)
+		require.Empty(t, second)
 	})
 }

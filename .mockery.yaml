@@ -1,0 +1,13 @@
+with-expecter: true
+inpackage: true
+all: true
+dir: "{{ .InterfaceDir }}"
+filename: "mock_{{ .InterfaceNameSnake }}.go"
+mockname: "{{ .Mock }}{{ .InterfaceNameCamel }}"
+disable-version-string: True
+
+packages:
+  github.com/cannonflesh/wordspell/components/index: {}
+  github.com/cannonflesh/wordspell/components/trademarkindex: {}
+  github.com/cannonflesh/wordspell/components/bloomfilter: {}
+  github.com/cannonflesh/wordspell/repo/catalog: {}
