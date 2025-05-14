@@ -30,7 +30,7 @@ func NewTestS3(t *testing.T) *S3Provider {
 		RootPassword: pass,
 	}
 	opts.ContainerOptions.StartupTimeout = time.Minute
-	opts.Image = "minio/minio:latest"
+	opts.Image = "registry.sima-land.ru/minio/minio:latest"
 	container, err := minio.Start(ctx, opts)
 	if err != nil {
 		t.Fatalf("failed to start container: %v", err)

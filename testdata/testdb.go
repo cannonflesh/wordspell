@@ -33,7 +33,7 @@ func NewPgConn(t *testing.T) *PgConn {
 	dbPassword := "pass"
 
 	pgC, err := contpgx.RunContainer(ctx,
-		testcontainers.WithImage("postgres:16.8-bookworm"),
+		testcontainers.WithImage("gitlab.sima-land.ru:5544/docker/postgres-pro:16.4.1-5"),
 		contpgx.WithInitScripts(filepath.Join(ThisDir(), "basedump.sql")),
 		contpgx.WithDatabase(dbName),
 		contpgx.WithUsername(dbUser),

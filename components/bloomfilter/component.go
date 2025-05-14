@@ -2,12 +2,14 @@ package bloomfilter
 
 import (
 	"bytes"
-	"github.com/bits-and-blooms/bloom/v3"
-	"github.com/cannonflesh/wordspell/domain"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"io"
 	"sync"
+
+	"github.com/bits-and-blooms/bloom/v3"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+
+	"github.com/cannonflesh/wordspell/domain"
 )
 
 const (

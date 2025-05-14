@@ -1,12 +1,13 @@
 package trademarkindex
 
 import (
-	"github.com/stretchr/testify/mock"
 	"io"
 	"testing"
 
-	"github.com/cannonflesh/wordspell/testdata"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestBuilder_LoadIndexData(t *testing.T) {

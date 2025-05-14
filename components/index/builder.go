@@ -2,15 +2,16 @@ package index
 
 import (
 	"bytes"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"regexp"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/cannonflesh/wordspell/domain"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+
+	"github.com/cannonflesh/wordspell/domain"
 )
 
 var (

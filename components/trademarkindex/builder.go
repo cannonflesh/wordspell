@@ -5,8 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cannonflesh/wordspell/domain"
 	"github.com/sirupsen/logrus"
+
+	"github.com/cannonflesh/wordspell/domain"
 )
 
 const sourceBatchLen = 5000

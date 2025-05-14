@@ -12,9 +12,9 @@ func TestProcessor_Process(t *testing.T) {
 	t.Run("ThreePatternsInTheMiddle", func(t *testing.T) {
 		words := []string{
 			"head",
-			"3.14", "mm",
+			"3.14", "mM",
 			"spacer",
-			"9.14-", "15.33", "-99кг",
+			"9.14-", "15.33", "-99Кг",
 			"72,18шт",
 			"tail",
 		}
@@ -36,7 +36,7 @@ func TestProcessor_Process(t *testing.T) {
 			"3.14", "mm",
 			"spacer",
 			"9.14-", "15.33", "-99кг",
-			"72,18шт",
+			"72,18Шт",
 			"tail",
 		}
 
@@ -54,7 +54,7 @@ func TestProcessor_Process(t *testing.T) {
 	t.Run("PatternAtEnd", func(t *testing.T) {
 		words := []string{
 			"head",
-			"l 3.14", "mm",
+			"L 3.14", "mm",
 			"spacer",
 			"9.14-", "15.33", "-99кг",
 			"72,18шт",
@@ -75,7 +75,7 @@ func TestProcessor_Process(t *testing.T) {
 		words := []string{
 			"3.14mm",
 			"9.14-", "15.33", "-99кг",
-			"d = 72,18", "in",
+			"D = 72,18", "iN",
 			"55", "-75", "%",
 		}
 

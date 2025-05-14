@@ -1,10 +1,6 @@
 package wordspell
 
 import (
-	"github.com/cannonflesh/wordspell/processors/dimensions"
-	"github.com/cannonflesh/wordspell/processors/dimsuffix"
-	"github.com/cannonflesh/wordspell/processors/papersizes"
-	"github.com/cannonflesh/wordspell/processors/units"
 	"strings"
 	"time"
 
@@ -18,8 +14,12 @@ import (
 	"github.com/cannonflesh/wordspell/domain"
 	s3client "github.com/cannonflesh/wordspell/internal/s3"
 	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/processors/dimensions"
+	"github.com/cannonflesh/wordspell/processors/dimsuffix"
 	"github.com/cannonflesh/wordspell/processors/dupremove"
+	"github.com/cannonflesh/wordspell/processors/papersizes"
 	"github.com/cannonflesh/wordspell/processors/trademarks"
+	"github.com/cannonflesh/wordspell/processors/units"
 	s3source "github.com/cannonflesh/wordspell/repo/s3"
 )
 

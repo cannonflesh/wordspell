@@ -2,15 +2,10 @@ package wordspell
 
 import (
 	"fmt"
-	"github.com/cannonflesh/wordspell/processors/dimensions"
-	"github.com/cannonflesh/wordspell/processors/dimsuffix"
-	"github.com/cannonflesh/wordspell/processors/dupremove"
-	"github.com/cannonflesh/wordspell/processors/papersizes"
-	"github.com/cannonflesh/wordspell/processors/trademarks"
-	"github.com/cannonflesh/wordspell/processors/units"
-	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/cannonflesh/wordspell/components/bloomfilter"
 	"github.com/cannonflesh/wordspell/components/index"
@@ -19,6 +14,12 @@ import (
 	"github.com/cannonflesh/wordspell/components/wordmutate"
 	"github.com/cannonflesh/wordspell/domain"
 	"github.com/cannonflesh/wordspell/options"
+	"github.com/cannonflesh/wordspell/processors/dimensions"
+	"github.com/cannonflesh/wordspell/processors/dimsuffix"
+	"github.com/cannonflesh/wordspell/processors/dupremove"
+	"github.com/cannonflesh/wordspell/processors/papersizes"
+	"github.com/cannonflesh/wordspell/processors/trademarks"
+	"github.com/cannonflesh/wordspell/processors/units"
 	"github.com/cannonflesh/wordspell/repo/file"
 	"github.com/cannonflesh/wordspell/testdata"
 )
