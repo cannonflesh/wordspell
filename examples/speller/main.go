@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/cannonflesh/wordspell/testdata"
 	"sync"
 	"time"
 
@@ -16,6 +15,7 @@ import (
 	s3client "github.com/cannonflesh/wordspell/internal/s3"
 	"github.com/cannonflesh/wordspell/options"
 	s3source "github.com/cannonflesh/wordspell/repo/s3"
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 const batchSize = 1000

@@ -1,8 +1,9 @@
 package dupremove
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestProcessor_Process(t *testing.T) {
@@ -13,10 +14,10 @@ func TestProcessor_Process(t *testing.T) {
 		"two",
 		"two",
 		"two",
-		"three-four",
+		"three-Four",
 		"four",
 		"two",
-		"two",
+		"Two",
 		"two",
 		"five",
 		"five-six",
@@ -26,5 +27,5 @@ func TestProcessor_Process(t *testing.T) {
 	}
 
 	res := p.Process(check)
-	require.Equal(t, []string{"one", "two", "three-four", "two", "five-six", "six-seven", "eight"}, res)
+	require.Equal(t, []string{"one", "two", "three-Four", "two", "five-six", "six-seven", "eight"}, res)
 }

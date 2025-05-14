@@ -2,10 +2,10 @@ package trademarkindex
 
 import (
 	"bytes"
-	"github.com/pkg/errors"
 	"io"
 	"testing"
 
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 )

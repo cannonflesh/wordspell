@@ -101,7 +101,7 @@ func (s *Component) InsertSpace(w string) []string {
 	resLen := len(runeWord) + 1
 
 	res := make([]string, 0, resLen)
-	for i := 0; i <= len(runeWord); i++ {
+	for i := 1; i < len(runeWord); i++ {
 		res = append(res, string(runeWord[:i])+domain.SpaceSeparator+string(runeWord[i:]))
 	}
 

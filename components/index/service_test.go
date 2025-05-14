@@ -2,12 +2,14 @@ package index
 
 import (
 	"bytes"
-	"github.com/cannonflesh/wordspell/components/langdetect"
-	"github.com/cannonflesh/wordspell/options"
-	"github.com/stretchr/testify/require"
 	"io"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	"github.com/cannonflesh/wordspell/components/langdetect"
+	"github.com/cannonflesh/wordspell/options"
 )
 
 func TestService_runeLen(t *testing.T) {

@@ -1,8 +1,9 @@
 package dimensions
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestProcessor_Process(t *testing.T) {
@@ -15,7 +16,7 @@ func TestProcessor_Process(t *testing.T) {
 			"x",
 			"44Х55",
 			"*",
-			"777/99км",
+			"777/99кМ",
 			"tail",
 		}
 
@@ -92,7 +93,7 @@ func TestProcessor_Process(t *testing.T) {
 			"x",
 			"44Х55",
 			"*",
-			"777/99км",
+			"777/99Км",
 			"15/19Х16",
 			"40*40",
 		}

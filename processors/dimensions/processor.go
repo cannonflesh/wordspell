@@ -16,9 +16,9 @@ type Processor struct {
 
 func New() *Processor {
 	return &Processor{
-		requestRe:   regexp.MustCompile(`(?:^|\s)(?:[\d.,]+\s?[xXхХ*/]\s?)+[\d.,]+(?:\s?(?:мм|см|дм|м|км|дюйм|mm|cm|m|km|in|ft))?`),
+		requestRe:   regexp.MustCompile(`(?:^|\s)(?:[\d.,]+\s?[xXхХ*/]\s?)+[\d.,]+(?i:\s?(?:мм|см|дм|м|км|дюйм|mm|cm|m|km|in|ft))?`),
 		separatorRe: regexp.MustCompile(`\s?[xXхХ*/]\s?`),
-		tailRe:      regexp.MustCompile(`\s?(?:мм|см|дм|м|км|дюйм|mm|cm|m|km|in|ft)`),
+		tailRe:      regexp.MustCompile(`\s?(?i:мм|см|дм|м|км|дюйм|mm|cm|m|km|in|ft)`),
 	}
 }
 
@@ -33,7 +33,7 @@ func (p *Processor) processStep(req string) string {
 		res := p.separatorRe.ReplaceAllString(in, "*")
 
 		res = p.tailRe.ReplaceAllStringFunc(res, func(in string) string {
-			return domain.SpaceSeparator + strings.TrimLeft(in, domain.SpaceSeparator)
+			return domain.SpaceSeparator + strings.ToLower(strings.TrimLeft(in, domain.SpaceSeparator))
 		})
 
 		prefix, body, suffix := processors.SplitChunk(res)

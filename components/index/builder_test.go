@@ -3,9 +3,10 @@ package index
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/cannonflesh/wordspell/components/langdetect"
 	"github.com/cannonflesh/wordspell/testdata"
-	"github.com/stretchr/testify/require"
 )
 
 const (

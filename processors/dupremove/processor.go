@@ -24,7 +24,8 @@ func (p *Processor) Process(words []string) []string {
 			right = leftChunk(words[i+1])
 		}
 
-		if words[i] == left || words[i] == right {
+		checkWord := strings.ToLower(words[i])
+		if checkWord == left || checkWord == right {
 			continue
 		}
 
@@ -37,10 +38,10 @@ func (p *Processor) Process(words []string) []string {
 
 func rightChunk(word string) string {
 	splitted := strings.Split(word, "-")
-	return splitted[len(splitted)-1]
+	return strings.ToLower(splitted[len(splitted)-1])
 }
 
 func leftChunk(word string) string {
 	splitted := strings.Split(word, "-")
-	return splitted[0]
+	return strings.ToLower(splitted[0])
 }

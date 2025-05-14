@@ -112,3 +112,12 @@ func TestService_InsertsRu(t *testing.T) {
 		require.Len(t, allAdds, 752250)
 	})
 }
+
+func TestService_InsertSpace(t *testing.T) {
+	s := New()
+	word := "проверка"
+	addSpace := s.InsertSpace(word)
+	require.Len(t, addSpace, 7)
+	require.Equal(t, addSpace[0], "п роверка")
+	require.Equal(t, addSpace[6], "проверк а")
+}

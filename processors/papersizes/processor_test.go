@@ -1,8 +1,9 @@
 package papersizes
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestProcessor_Process(t *testing.T) {

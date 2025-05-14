@@ -1,10 +1,12 @@
 package catalog
 
 import (
-	"github.com/cannonflesh/wordspell/testdata"
+	"testing"
+
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
-	"testing"
+
+	"github.com/cannonflesh/wordspell/testdata"
 )
 
 func TestCatalog_TradeMarkNames(t *testing.T) {
